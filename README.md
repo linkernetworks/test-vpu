@@ -20,6 +20,11 @@ this will generate test-vpu test-gpu test-cpu docker images
     
 # Pull from dockerhub
 
+    docker pull waitingkuo/test-vpu
     docker run waitingkuo/test-vpu
+    
+    docker pull waitingkuo/test-gpu
     docker run --gpus=all waitingkuo/test-gpu
+    
+    docker pull waitingkuo/test-cpu
     docker run waitingkuo/test-cpu
