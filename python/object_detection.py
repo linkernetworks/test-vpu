@@ -5,6 +5,7 @@
 # (4. if inference speed is too slow for you, try to make w' x h' smaller, which is defined with DEFAULT_INPUT_SIZE (in object_detection.py or ObjectDetection.cs))
 import numpy as np
 import math
+import time
 
 
 class ObjectDetection(object):
@@ -122,9 +123,22 @@ class ObjectDetection(object):
         return (boxes, class_probs)
 
     def predict_image(self, image):
+        t0 = time.time()
         inputs = self.preprocess(image)
+        t1 = time.time()
+        pre_time = t1-t0
+
+        t0 = time.time()
         prediction_outputs = self.predict(inputs)
-        return self.postprocess(prediction_outputs)
+        t1 = time.time()
+        inf_time = t1 - t0
+
+        t0 = time.time()
+        res = self.postprocess(prediction_outputs)
+        t1 = time.time()
+        post_time = t1 - t0
+
+        return res, pre_time, inf_time, post_time
 
     def preprocess(self, image):
         image = image.convert("RGB") if image.mode != "RGB" else image

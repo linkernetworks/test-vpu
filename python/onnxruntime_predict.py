@@ -51,12 +51,38 @@ def main(image_filename):
     print('reading image')
     image = Image.open(image_filename)
     print('predict 10 times')
-    for i in range(10):
-        t0 = time.time()
-        predictions = od_model.predict_image(image)
-        t1 = time.time()
-        print(t1-t0, 'seconds')
-    #print(predictions)
+    pres = []
+    infs = []
+    posts = []
+    totals = []
+    N = 10
+
+    def _format(x):
+        return int(x*100)/100
+    # first image's result isn't accurate
+    predictions, pre, inf, post= od_model.predict_image(image)
+
+    for i in range(N):
+        predictions, pre, inf, post= od_model.predict_image(image)
+        pre *= 1000
+        inf *= 1000
+        post *= 1000
+        pres.append(pre)
+        infs.append(inf)
+        posts.append(post)
+        totals.append(pre+inf+post)
+        print('predicting image ...')
+        print('  pre_process :', _format(pre), 'ms')
+        print('  inference   :', _format(inf), 'ms')
+        print('  post_process:', _format(post), 'ms')
+        print('  all         :', _format(pre+inf+post), 'ms')
+
+    print('Average (', N, 'images )')
+    print('  pre_process :', _format(sum(pres)/N), 'ms')
+    print('  inference   :', _format(sum(infs)/N), 'ms')
+    print('  post_process:', _format(sum(posts)/N), 'ms')
+    print('  all         :', _format(sum(totals)/N), 'ms')
+
     
 if __name__ == '__main__':
     if len(sys.argv) <= 1:
