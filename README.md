@@ -13,15 +13,19 @@ this will generate test-vpu test-gpu test-cpu docker images
     
 ### run it
 
-    docker run test-vpu
+    docker run test-vpu16  # for vpu floating 16
+    docker run test-vpu32  # for vpu floating 32
     docker run test-gpu
     docker run test-cpu
     
     
 # Pull from dockerhub
 
-    docker pull waitingkuo/test-vpu
-    docker run waitingkuo/test-vpu
+    docker pull waitingkuo/test-vpu16
+    docker run waitingkuo/test-vpu16
+
+    docker pull waitingkuo/test-vpu32
+    docker run waitingkuo/test-vpu32
     
     docker pull waitingkuo/test-gpu
     docker run --gpus=all waitingkuo/test-gpu
